@@ -1,0 +1,2 @@
+add_executable(event_http_bench http_bench.c)
+target_link_libraries(event_http_bench event)
