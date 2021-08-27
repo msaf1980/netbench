@@ -11,7 +11,7 @@ foreach(cmakeFile ${cmakeInitFiles})
     include(${cmakeFile})
 endforeach(cmakeFile)
 
-project (libevents)
+project (netbench)
 
 file(GLOB cmakeFiles cmake/*.cmake)
 list(SORT cmakeFiles)

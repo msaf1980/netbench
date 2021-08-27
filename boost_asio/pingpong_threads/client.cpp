@@ -43,15 +43,12 @@ public:
 
     void add(size_t bytes_written, size_t bytes_read, size_t writes, size_t reads)
     {
-        if (reads > 0)
-        {
-            asio::detail::mutex::scoped_lock lock(mutex_);
-            total_bytes_written_ += bytes_written;
-            total_bytes_read_ += bytes_read;
-            total_writes_ += writes;
-            total_reads_ += reads;
-            ++session_count_;
-        }
+        asio::detail::mutex::scoped_lock lock(mutex_);
+        total_bytes_written_ += bytes_written;
+        total_bytes_read_ += bytes_read;
+        total_writes_ += writes;
+        total_reads_ += reads;
+        ++session_count_;
     }
 
     void print()

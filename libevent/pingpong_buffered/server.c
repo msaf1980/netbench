@@ -23,7 +23,7 @@ static void set_tcp_no_delay(evutil_socket_t fd)
 static void signal_cb(evutil_socket_t fd, short what, void * arg)
 {
     struct event_base * base = arg;
-    fprintf(stderr, "stop\n");
+    fprintf(stderr, "server stoping\n");
 
     event_base_loopexit(base, NULL);
 }
@@ -79,7 +79,6 @@ void * server_thread(int * port)
 
     evstop = evsignal_new(server_base, SIGHUP, signal_cb, server_base);
     evsignal_add(evstop, NULL);
-
     /* Clear the sockaddr before using it, in case there are extra
      *          * platform-specific fields that can mess us up. */
     memset(&sin, 0, sizeof(sin));

@@ -11,6 +11,7 @@
 
 #include <sys/resource.h>
 #include <sys/time.h>
+#include <sys/types.h>
 
 #include <pthread.h>
 #include <signal.h>
@@ -32,7 +33,7 @@ static void set_tcp_no_delay(evutil_socket_t fd)
 static void timeoutcb(evutil_socket_t fd, short what, void * arg)
 {
     struct event_base * base = arg;
-    fprintf(stderr, "shutdown\n");
+    fprintf(stderr, "client shutdown\n");
 
     event_base_loopexit(base, NULL);
 }
@@ -238,12 +239,6 @@ int main(int argc, char ** argv)
         event_base_free(base);
         free(message);
 
-        if (server_start)
-        {
-            event_base_loopexit(server_base, NULL);
-            pthread_join(server_tid, NULL);
-        }
-
         printf(
             "%20s %8s %6s %18s %18s %10s %12s %18s %18s\n",
             "Write buffer (bytes)",
@@ -266,6 +261,12 @@ int main(int argc, char ** argv)
             (double)100000 * seconds / total_messages_read,
             total_bytes_read,
             total_messages_read);
+
+        if (server_start)
+        {
+            kill(getpid(), SIGINT);
+            pthread_join(server_tid, NULL);
+        }
     }
 
     return 0;
